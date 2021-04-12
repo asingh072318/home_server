@@ -16,6 +16,7 @@ export default State(currentState, {
         "exit_code":-1,
         "message":"",
       },
+      "username":"",
     },
     tags: [],
     selectedpackages: [],
@@ -37,6 +38,7 @@ export default State(currentState, {
     state.currentuser['isLoggedIn'] = false;
     state.currentuser['response']['exit_code'] = -1;
     state.currentuser['response']['message'] = "";
+    state.currentuser['username'] = "";
     return _.cloneDeep(state);
   },
   setcurrentUserToken(state,payload) {
@@ -44,6 +46,7 @@ export default State(currentState, {
       state.currentuser['token'] = payload["token"];
       state.currentuser['admin'] = payload["admin"];
       state.currentuser['isLoggedIn'] = true;
+      state.currentuser['username'] = payload["username"];
     }
     state.currentuser.response['exit_code'] = payload['exit_code'];
     state.currentuser.response['message'] = payload['message'];
