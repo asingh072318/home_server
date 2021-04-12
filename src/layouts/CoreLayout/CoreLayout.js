@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles/';
 import PropTypes from "prop-types";
-
+import Sidebar from "../../views/sidebar";
 import "../../styles/core.scss";
 
 const theme = createMuiTheme({
   typography: {
+    "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
+    "fontSize": 14,
+    "fontWeightLight": 300,
+    "fontWeightRegular": 400,
+    "fontWeightMedium": 500,
     useNextVariants: true,
   },
 });
@@ -14,9 +19,13 @@ export default class CoreLayout extends Component {
     let { children } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
+      <div className="outerLayout">
+      <Sidebar>
         <div className="core-layout">
           {children}
         </div>
+      </Sidebar>
+      </div>
       </MuiThemeProvider>
     );
   }

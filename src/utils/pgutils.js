@@ -12,6 +12,7 @@ function login(payload){
         },
         data: JSON.stringify(payload),
         success: function(response) {
+          response['username'] = payload['username'];
           console.log(response);
           Actions.TodoStateV1.setcurrentUserToken(response);
         },

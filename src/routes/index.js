@@ -14,7 +14,7 @@ function requireAdmin(location,replace){
 // bind the view components to appropriate URL path
 export default store =>
   <div>
-    <Route path="/" component={CoreLayout}>
+    <Route path="/">
       <IndexRoute component={Index} />
     </Route>
     <Route component={CoreLayout}>
