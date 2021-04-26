@@ -23,6 +23,31 @@ function login(payload){
     $.ajax(settings);
 }
 
+function getfiles(token){
+  var settings = {
+      url: BASE_URL + "Uploads_API/upload_file",
+      type: "GET",
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json, text/javascript, */*; q=0.01",
+        "jwt-token": token,
+      },
+      success: function(response) {
+        console.log('response is ', response)
+        if(response['exit_code'] == 200){
+          Actions.TodoStateV1.setcurrentUserFiles(response['files']);
+        }
+        else{
+          Actions.TodoStateV1.setcurrentUserFiles([]);
+        }
+      },
+      error: function(response){
+        console.log("error response is ", response);
+      }
+  };
+  $.ajax(settings);
+}
+
 function register(payload){
   var settings = {
       url: BASE_URL + "Admin_API/user",
@@ -45,5 +70,6 @@ function register(payload){
 
 export {
     login,
-    register
+    register,
+    getfiles
 };

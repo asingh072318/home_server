@@ -17,6 +17,7 @@ export default State(currentState, {
         "message":"",
       },
       "username":"",
+      "files":[],
     },
     tags: [],
     selectedpackages: [],
@@ -41,6 +42,10 @@ export default State(currentState, {
     state.currentuser['username'] = "";
     return _.cloneDeep(state);
   },
+  setcurrentUserFiles(state,payload){
+    state.currentuser.files = payload;
+    return _.cloneDeep(state);
+  },
   setcurrentUserToken(state,payload) {
     if(payload['exit_code'] == 200){
       state.currentuser['token'] = payload["token"];
@@ -54,11 +59,13 @@ export default State(currentState, {
     return _.cloneDeep(state);
   },
   setcurrentUserResponse(state,payload){
-    if(payload['exit_code'] === 200)
+    if(payload['exit_code'] === 200){
       state.currentuser["response"]["exit_code"] = 205;
-    else
+      state.currentuser["response"]["message"] = "User Created Successfully, You can try logging in."
+    } else {
       state.currentuser["response"]["exit_code"] = payload["exit_code"];
-    state.currentuser["response"]["message"] = payload["message"];
+      state.currentuser["response"]["message"] = payload["message"];
+    }
     return _.cloneDeep(state);
   },
   setModalVisible(state, payload) {
