@@ -3,16 +3,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-
+import Image from './static/upload.png';
 
 const styles = theme => ({
     button: {
@@ -33,10 +29,23 @@ const styles = theme => ({
     },
     uploadSection:{
         display:'flex',
-        alignItems:'center',
-        justifyContent: 'center',
+        flexDirection:'row',
+        justifyContent:'space-between',
         height:'60%',
+        width:'100%',
         backgroundColor: '#F7F8FA',
+    },
+    uploadsleft:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'flex-end',
+        width:'50%',
+        backgroundImage: `url(${Image})`,
+    },
+    progressright:{
+        width:'50%',
+        backgroundColor:'green',
     },
     previewSection:{
         height:'40%',
@@ -97,7 +106,19 @@ class UploadModal extends Component{
                     </AppBar>
                     <div className={classes.bodySection}>
                         <div className={classes.uploadSection}>
-                            <img src={require('./static/upload.jpg')} className={classes.uploadImage}/>
+                            <div className={classes.uploadsleft}>
+                            <Button
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<CloudUploadIcon />}
+                                component='label'
+                                >
+                                Click Here to Select Files.
+                                <input type='file' hidden multiple/>
+                            </Button>
+                            </div>
+                            <div className={classes.progressright}>Progress</div>
                         </div>
                         <div className={classes.previewSection}>
                             PreviewSection
