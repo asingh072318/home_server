@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Actions } from "jumpstate";
 import { browserHistory } from "react-router";
 import { withStyles } from '@material-ui/core/styles';
-import {DropzoneDialog} from 'material-ui-dropzone';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SearchBar from "material-ui-search-bar";
 import * as pgutils from "../utils/pgutils";
-import { ThumbDownSharp } from "@material-ui/icons";
+import UploadModal from "../components/UploadModal/UploadModal";
 // Binding the state and actions. These will be available as props to component
 const styles = theme => ({
   rootpage:{
@@ -59,7 +55,6 @@ class Home extends Component {
     this.state = {
       value:"",
       files: [],
-      open: false,
     };
     if(!props.coach.currentuser['isLoggedIn'])
       browserHistory.push('/');
@@ -77,28 +72,6 @@ class Home extends Component {
     pgutils.getfiles(this.props.coach.currentuser['token']);
   }
 
-  handleClose = () => {
-    this.setState({
-        open: false
-    });
-  }
-
-  handleSave = (files) => {
-    //Saving files to state for further use and closing Modal.
-    this.setState({
-      files: files,
-      open: false
-    });
-  }
-
-  handleOpen = () => {
-    this.setState({
-        open: true,
-    });
-  }
-  renderFiles = () => {
-    
-  }
   render() {
     console.log(this.state.files);
     const { classes } = this.props;
@@ -110,26 +83,10 @@ class Home extends Component {
               onChange={() => console.log('onChange')}
               onRequestSearch={() => console.log('onRequestSearch')}
               style={{
-                width:'80%',
+                width:'95%',
               }}
             />
-            <Button
-              variant="contained"
-              color="default"
-              className={classes.button}
-              startIcon={<CloudUploadIcon />}
-              onClick={() => this.handleOpen()}
-            >
-              Upload
-            </Button>
-            <DropzoneDialog
-              open={this.state.open}
-              onSave={(files) => this.handleSave(files)}
-              showPreviews={true}
-              maxFileSize={5000000}
-              dropzoneText={"Drag and Drop file or Click here"}
-              onClose={() => this.handleClose()}
-            />    
+            <UploadModal />
           </div>
           <div className={classes.content}>
           <table className="table">
