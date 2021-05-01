@@ -42,6 +42,8 @@ const styles = theme => ({
         alignItems:'flex-end',
         width:'50%',
         backgroundImage: `url(${Image})`,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
     },
     progressright:{
         width:'50%',
@@ -62,6 +64,7 @@ class UploadModal extends Component{
         this.state = {
         open:false,
         setOpen: false,
+        files: [],
         };
     }
 
@@ -71,6 +74,26 @@ class UploadModal extends Component{
 
     handleOpen = () => {
         this.setState({open:true});
+    }
+
+    onUpload = (event) => {
+        console.log(typeof(event.target.files),event.target.files)
+        this.setState({files: event.target.files})
+    }
+
+    renderProgress = () => {
+        if(!this.state.files.length){
+            return(
+                <div>No Files Selected</div>
+            )
+        }
+        else{
+            this.state.files.map((eachfile,index) => {
+                return(
+                    <div>eachfile['filename']</div>
+                )
+            })
+        }
     }
 
     render() {
@@ -115,13 +138,17 @@ class UploadModal extends Component{
                                 component='label'
                                 >
                                 Click Here to Select Files.
-                                <input type='file' hidden multiple/>
+                                <form >
+                                <input type='file' hidden multiple onChange={(event) => this.onUpload(event)}/>
+                                </form>
                             </Button>
                             </div>
-                            <div className={classes.progressright}>Progress</div>
+                            <div className={classes.progressright}>
+                                {this.renderProgress()}
+                            </div>
                         </div>
                         <div className={classes.previewSection}>
-                            PreviewSection
+                            Preview Section
                         </div>
                     </div>
                 </Dialog>
