@@ -86,7 +86,7 @@ class Home extends Component {
                 width:'95%',
               }}
             />
-            <UploadModal />
+            <UploadModal token={this.props.coach.currentuser['token']}/>
           </div>
           <div className={classes.content}>
           <table className="table">

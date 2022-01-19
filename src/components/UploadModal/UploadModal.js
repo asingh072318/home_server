@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Image from './static/upload.png';
-import e from "express";
 
 const styles = theme => ({
     button: {
@@ -79,8 +78,9 @@ class UploadModal extends Component{
 
     onUpload = (event) => {
         console.log(this.state.files,event.target.files);
-        if(this.state.files == []){
+        if(this.state.files.length == 0){
             this.setState({files: event.target.files});
+            console.log('token:',this.props.token);
         }
         else{
             let old_files = this.state.files;
