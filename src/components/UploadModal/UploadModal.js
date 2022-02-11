@@ -30,8 +30,9 @@ const styles = theme => ({
     uploadSection:{
         display:'flex',
         flexDirection:'row',
-        justifyContent:'space-between',
-        height:'60%',
+        justifyContent:'start',
+        alignItems:'start',
+        height:'100%',
         width:'100%',
         backgroundColor: '#F7F8FA',
     },
@@ -41,26 +42,24 @@ const styles = theme => ({
         justifyContent:'center',
         alignItems:'flex-end',
         width:'50%',
-        backgroundImage: `url(${Image})`,
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
     },
     progressright:{
         width:'50%',
         backgroundColor:'green',
     },
-    previewSection:{
-        height:'40%',
-    },
     uploadImage:{
         width:'70%',
         maxHeight:'100%',
-    }
+    },
+    tableItem:{
+        verticalAlign:"center",
+        fontSize:'16px',
+    },
 });
 
 class UploadModal extends Component{
     constructor(props){
-        super(props);
+        super(props); 
         this.state = {
         open:false,
         setOpen: false,
@@ -78,14 +77,8 @@ class UploadModal extends Component{
 
     onUpload = (event) => {
         console.log(this.state.files,event.target.files);
-        if(this.state.files.length == 0){
-            this.setState({files: event.target.files});
-            console.log('token:',this.props.token);
-        }
-        else{
-            let old_files = this.state.files;
-            console.log(old_files);
-        }
+        this.setState({files: event.target.files});
+        this.props.save(this.props.token,event.target.files);
     }
 
     renderProgress = () => {
@@ -138,7 +131,27 @@ class UploadModal extends Component{
                     <div className={classes.bodySection}>
                         <div className={classes.uploadSection}>
                             <div className={classes.uploadsleft}>
-                            <Button
+                            <table className="table">
+                                <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">File Name</th>
+                                    <th scope="col">File Size</th>
+                                    <th scope="col">Uploaded At</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.files.map((item,index) => (
+                                    <tr key={index}>
+                                    <th scope="row" className={classes.tableItem}>{index+1}</th>
+                                    <td className={classes.tableItem}>{item['filename']}</td>
+                                    <td className={classes.tableItem}>{item['filesize']}</td>
+                                    <td className={classes.tableItem}>{item['uploaded_at']}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                            {/* <Button
                                 variant="contained"
                                 color="default"
                                 className={classes.button}
@@ -149,14 +162,11 @@ class UploadModal extends Component{
                                 <form >
                                 <input type='file' hidden multiple onChange={(event) => this.onUpload(event)}/>
                                 </form>
-                            </Button>
+                            </Button> */}
                             </div>
                             <div className={classes.progressright}>
                                 {this.renderProgress()}
                             </div>
-                        </div>
-                        <div className={classes.previewSection}>
-                            Preview Section
                         </div>
                     </div>
                 </Dialog>

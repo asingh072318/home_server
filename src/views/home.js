@@ -86,7 +86,7 @@ class Home extends Component {
                 width:'95%',
               }}
             />
-            <UploadModal token={this.props.coach.currentuser['token']}/>
+            <UploadModal token={this.props.coach.currentuser['token']} save={pgutils.saveFiles}/>
           </div>
           <div className={classes.content}>
           <table className="table">
@@ -99,7 +99,7 @@ class Home extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.files.map((item,index) => (
+              {this.state.files !== undefined && this.state.files.map((item,index) => (
                 <tr key={index}>
                   <th scope="row" className={classes.tableItem}>{index+1}</th>
                   <td className={classes.tableItem}>{item['filename']}</td>
