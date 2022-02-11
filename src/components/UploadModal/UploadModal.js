@@ -38,7 +38,7 @@ const styles = theme => ({
     },
     uploadsleft:{
         display:'flex',
-        flexDirection:'row',
+        flexDirection:'column',
         justifyContent:'center',
         alignItems:'flex-end',
         width:'50%',
@@ -64,6 +64,7 @@ class UploadModal extends Component{
         open:false,
         setOpen: false,
         files: [],
+        events: [],
         };
     }
 
@@ -71,14 +72,26 @@ class UploadModal extends Component{
         this.setState({open:false});
     }
 
+    onAdd = (event) => {
+        var files = this.state.files;
+        files.push(event.target.files[0]);
+        var events = this.state.events;
+        events.push(event);
+        this.setState({events:events,files:files});
+    }
+
     handleOpen = () => {
         this.setState({open:true});
     }
 
-    onUpload = (event) => {
-        console.log(this.state.files,event.target.files);
-        this.setState({files: event.target.files});
-        this.props.save(this.props.token,event.target.files);
+    onUpload = (index) => {
+        console.log("uploading file ",index);
+        //this.props.save(this.props.token,this.state.events[index].target.files);
+    }
+
+    onSad = (index) => {
+        console.log("uploading file ",index);
+        //this.props.save(this.props.token,this.state.events[index].target.files);
     }
 
     renderProgress = () => {
@@ -95,6 +108,14 @@ class UploadModal extends Component{
                 );
             })
         }
+    }
+
+    onDelete = (index) => {
+        console.log("On Delete");
+        var files = this.state.files;
+        files.splice(index,1);
+        console.log(this.state.files,files);
+        this.setState({files:files});
     }
 
     render() {
@@ -137,16 +158,20 @@ class UploadModal extends Component{
                                     <th scope="col">#</th>
                                     <th scope="col">File Name</th>
                                     <th scope="col">File Size</th>
-                                    <th scope="col">Uploaded At</th>
+                                    <th scope="col">Last Modified</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {this.state.files.map((item,index) => (
                                     <tr key={index}>
                                     <th scope="row" className={classes.tableItem}>{index+1}</th>
-                                    <td className={classes.tableItem}>{item['filename']}</td>
-                                    <td className={classes.tableItem}>{item['filesize']}</td>
-                                    <td className={classes.tableItem}>{item['uploaded_at']}</td>
+                                    <td className={classes.tableItem}>{item['name']}</td>
+                                    <td className={classes.tableItem}>{item['size']}</td>
+                                    <td className={classes.tableItem}>{item['lastModified']}</td>
+                                    <td>
+                                        <input className='myclass' type='button' value='Delete' onClick={(index) => this.onDelete(index)}/>
+                                    </td>
                                     </tr>
                                 ))}
                                 </tbody>
@@ -160,9 +185,21 @@ class UploadModal extends Component{
                                 >
                                 Click Here to Select Files.
                                 <form >
-                                <input type='file' hidden multiple onChange={(event) => this.onUpload(event)}/>
+                                <input type='file' hidden onChange={(event) => this.onUpload(event)}/>
                                 </form>
                             </Button> */}
+                            <Button
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<CloudUploadIcon />}
+                                component='label'
+                                >
+                                Click Here to Select Files.
+                                <form >
+                                <input type='file' hidden onChange={(event) => this.onAdd(event)}/>
+                                </form>
+                            </Button>
                             </div>
                             <div className={classes.progressright}>
                                 {this.renderProgress()}
