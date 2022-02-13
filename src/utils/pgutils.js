@@ -70,6 +70,28 @@ function register(payload){
   $.ajax(settings);
 }
 
+function deleteFile(token,payload){
+  var settings = {
+    url: BASE_URL + "Uploads_API/upload_file",
+    type: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      "accept": "application/json, text/javascript, */*; q=0.01",
+      "jwt-token": token,
+    },
+    data: JSON.stringify(payload),
+    success: function(response) {
+      console.log(response);
+      Actions.TodoStateV1.setcurrentUserResponse(response);
+      getfiles(token);
+    },
+    error: function(response){
+      console.log("error response is ", response);
+    }
+  };
+  $.ajax(settings);
+}
+
 function saveFiles(token,payload){
   var form = new FormData();
   form.append("file", payload[0]);
@@ -86,6 +108,7 @@ function saveFiles(token,payload){
     success: function(response) {
       console.log(response);
       Actions.TodoStateV1.setcurrentUserResponse(response);
+      getfiles(token);
     },
     error: function(response){
       console.log("error response is ", response);
@@ -99,5 +122,6 @@ export {
     login,
     register,
     getfiles,
-    saveFiles
+    saveFiles,
+    deleteFile,
 };

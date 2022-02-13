@@ -43,7 +43,9 @@ export default State(currentState, {
     return _.cloneDeep(state);
   },
   setcurrentUserFiles(state,payload){
-    state.currentuser.files = payload;
+    state.currentuser.files = [] ;
+    if(payload !== undefined)
+      state.currentuser.files = payload;
     return _.cloneDeep(state);
   },
   setcurrentUserToken(state,payload) {

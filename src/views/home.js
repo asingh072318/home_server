@@ -72,8 +72,40 @@ class Home extends Component {
     pgutils.getfiles(this.props.coach.currentuser['token']);
   }
 
+  onDelete = (index) => {
+    var payload = {
+      filename:this.state.files[index]['filename']
+    }
+    pgutils.deleteFile(this.props.coach.currentuser['token'],payload);
+  }
+  
+  renderBody = () => {
+    console.log(this.state.files.length);
+    if(this.state.files.length === 0 || this.state.files.length === undefined){
+      return(
+        <h1>Click the Upload Button!</h1>
+      )
+    }
+    else{
+      const { classes } = this.props;
+      return(
+        this.state.files.map((item,index) => (
+          <tr key={index}>
+            <th scope="row" className={classes.tableItem}>{index+1}</th>
+            <td className={classes.tableItem}>{item['filename']}</td>
+            <td className={classes.tableItem}>{item['filesize']}</td>
+            <td className={classes.tableItem}>{item['uploaded_at']}</td>
+            <td>
+                <input className='myclass' type='button' value='Delete' onClick={(event) => this.onDelete(index)}/>
+                <input className='myclass' type='button' value='Print' onClick={(event) => this.onPrint(index)}/>
+            </td>
+          </tr>
+        ))
+      )
+    }
+  }
+
   render() {
-    console.log(this.state.files);
     const { classes } = this.props;
     return (
       <div className={classes.rootpage}>
@@ -96,17 +128,11 @@ class Home extends Component {
                 <th scope="col">File Name</th>
                 <th scope="col">File Size</th>
                 <th scope="col">Uploaded At</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {this.state.files !== undefined && this.state.files.map((item,index) => (
-                <tr key={index}>
-                  <th scope="row" className={classes.tableItem}>{index+1}</th>
-                  <td className={classes.tableItem}>{item['filename']}</td>
-                  <td className={classes.tableItem}>{item['filesize']}</td>
-                  <td className={classes.tableItem}>{item['uploaded_at']}</td>
-                </tr>
-              ))}
+              {this.renderBody()}
             </tbody>
           </table>
           </div>
