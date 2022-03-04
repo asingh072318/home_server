@@ -73,9 +73,8 @@ class UploadModal extends Component{
     }
 
     onAdd = (event) => {
-        console.log(event.target.files[0]['name']);
-        console.log([...this.state.files, event.target.files]);
-        this.setState({ files: [...this.state.files, event.target.files] })
+        console.log(event.target.files);
+        this.setState({ files: [...event.target.files] });
     }
 
     handleOpen = () => {
@@ -88,14 +87,6 @@ class UploadModal extends Component{
                 <div>No Files Uploaded</div>
             )
         }
-        else{
-            return Object.keys(this.state.uploadedFiles).map((eachfile,index) => {
-                //console.log('returning :',this.state.files[eachfile]);
-                return(
-                    <div key={index}>{this.state.uploadedFiles[eachfile]['name']}</div>
-                );
-            })
-        }
     }
 
     onDelete = (index) => {
@@ -107,6 +98,10 @@ class UploadModal extends Component{
     onUpload = (index) => {
         console.log("Upload index",index);
         this.props.save(this.props.token,this.state.files[index]);
+        var fileUploaded = this.state.files[index];
+        var files = this.state.files;
+        files.splice(index,1);
+        this.setState({files:files,uploadedFiles:[...this.state.uploadedFiles,fileUploaded]})
     }
 
     render() {
@@ -157,9 +152,9 @@ class UploadModal extends Component{
                                 {this.state.files.map((item,index) => (
                                     <tr key={index}>
                                     <th scope="row" className={classes.tableItem}>{index+1}</th>
-                                    <td className={classes.tableItem}>{item[0]['name']}</td>
-                                    <td className={classes.tableItem}>{item[0]['size']}</td>
-                                    <td className={classes.tableItem}>{item[0]['lastModified']}</td>
+                                    <td className={classes.tableItem}>{item['name']}</td>
+                                    <td className={classes.tableItem}>{item['size']}</td>
+                                    <td className={classes.tableItem}>{item['lastModified']}</td>
                                     <td>
                                         <input className='myclass' type='button' value='Delete' onClick={(event) => this.onDelete(index)}/>
                                         <input className='myclass' type='button' value='Upload' onClick={(event) => this.onUpload(index)}/>
@@ -189,7 +184,7 @@ class UploadModal extends Component{
                                 >
                                 Click Here to Select Files.
                                 <form >
-                                <input type='file' hidden  onChange={(event) => this.onAdd(event)} accept='image/png, image/jpeg,application/pdf'/>
+                                <input type='file' hidden multiple onChange={(event) => this.onAdd(event)} accept='image/png, image/jpeg,application/pdf'/>
                                 </form>
                             </Button>
                             </div>

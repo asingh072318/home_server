@@ -94,7 +94,7 @@ function deleteFile(token,payload){
 
 function saveFiles(token,payload){
   var form = new FormData();
-  form.append("file", payload[0]);
+  form.append("file", payload);
   var settings = {
     url: BASE_URL + "Uploads_API/upload_file",
     type: "POST",
