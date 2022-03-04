@@ -73,9 +73,9 @@ class UploadModal extends Component{
     }
 
     onAdd = (event) => {
-        const files = this.state.files;
-        files.push(event.target.files);
-        this.setState({files:files});
+        console.log(event.target.files[0]['name']);
+        console.log([...this.state.files, event.target.files]);
+        this.setState({ files: [...this.state.files, event.target.files] })
     }
 
     handleOpen = () => {
